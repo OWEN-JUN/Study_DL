@@ -37,35 +37,47 @@ x2_test, x2_val, y2_test, y2_val = train_test_split(x2_test, y2_test,random_stat
 
 
 print(x2_test.shape)
-'''
+
+
+
 
 # x2 = np.array([4,5,6])
 
 #모델구성
 import keras
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Input
 
 from time import time
 from keras import layers
 from keras import models
 
-model1 = Sequential()
+# model1 = Sequential()
 
-# model1.add(Dense(40, input_dim=1, activation="relu"))
+input1 = Input(shape=(3,))
+dense1 = Dense(100, activation = "relu")(input1)
+dense1_2 = Dense(30)(dense1)
+dense1_3 = Dense(7)(dense1_2)
 
-model1.add(Dense(5, input_shape=(3,), activation="relu"))
-
-
-model1.add(Dense(6 ))
-model1.add(Dense(6))
-
-model1.add(Dense(6))
-model1.add(Dense(6))
-model1.add(Dense(6))
+input2 = Input(shape=(3,))
+dense2 = Dense(50, activation = "relu")(input2)
+dense2_2 = Dense(30)(dense2)
+dense2_3 = Dense(7)(dense2_2)
 
 
-model1.add(Dense(3))
+
+# model1.add(Dense(5, input_shape=(3,), activation="relu"))
+
+
+# model1.add(Dense(6 ))
+# model1.add(Dense(6))
+
+# model1.add(Dense(6))
+# model1.add(Dense(6))
+# model1.add(Dense(6))
+
+
+# model1.add(Dense(3))
 
 
 
@@ -104,4 +116,3 @@ def RMAE(y_test, y_):
 print("RMSE:",RMSE(y_test,y_))
 print("RMAE:",RMAE(y_test,y_))
 print("r2:",r2_score(y_test,y_))
-'''

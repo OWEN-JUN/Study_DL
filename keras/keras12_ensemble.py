@@ -45,8 +45,9 @@ print(x2_test.shape)
 
 #모델구성
 import keras
-from keras.models import Sequential
+from keras.models import Sequential, Model
 from keras.layers import Dense, Input
+from keras.layers.merge import concatenate
 
 from time import time
 from keras import layers
@@ -59,13 +60,35 @@ dense1 = Dense(100, activation = "relu")(input1)
 dense1_2 = Dense(30)(dense1)
 dense1_3 = Dense(7)(dense1_2)
 
+
 input2 = Input(shape=(3,))
 dense2 = Dense(50, activation = "relu")(input2)
 dense2_2 = Dense(30)(dense2)
 dense2_3 = Dense(7)(dense2_2)
 
 
+merge1 = concatenate([dense1_3, dense2_3])
+middle1 = Dense(10)(merge1)
+middle2 = Dense(5)(middle1)
+middle3 = Dense(7)(middle2)
+##################################output_model#######################3
 
+
+output1 = Dense(30)(middle3)
+output1_2 = Dense(7)(output1)
+output1_3 = Dense(3)(output1_2)
+
+output2 = Dense(20)(middle3)
+output2_2 = Dense(3)(output2)
+
+
+model = Model(inputs = [input1, input2], outputs=[output1_3, output2_2])
+
+
+
+model.summary()
+
+'''
 # model1.add(Dense(5, input_shape=(3,), activation="relu"))
 
 
@@ -116,3 +139,4 @@ def RMAE(y_test, y_):
 print("RMSE:",RMSE(y_test,y_))
 print("RMAE:",RMAE(y_test,y_))
 print("r2:",r2_score(y_test,y_))
+'''

@@ -88,7 +88,7 @@ model = Model(inputs = [input1, input2], outputs=[output1_3, output2_2])
 
 model.summary()
 
-'''
+
 # model1.add(Dense(5, input_shape=(3,), activation="relu"))
 
 
@@ -111,8 +111,8 @@ model.summary()
 # # tb_hist = keras.callbacks.TensorBoard(log_dir='./graph', histogram_freq=0, write_graph=True, write_images=True)
 # #훈련
 
-model1.compile(loss="MSE", optimizer="adam", metrics=['accuracy'])
-model1.fit(x_train,y_train, epochs=500, batch_size=1, validation_data=(x_val,y_val))
+model.compile(loss="MSE", optimizer="adam", metrics=['accuracy'])
+model.fit([x1_train,x2_train],[y1_train,y2_train], epochs=100, batch_size=1, validation_data=([x1_val,x2_val],[y1_val,y2_val]))
 # # # model1.fit(x_train,y_train, epochs=100 )
 
 
@@ -121,10 +121,13 @@ model1.fit(x_train,y_train, epochs=500, batch_size=1, validation_data=(x_val,y_v
 
 # # #평가예측
 print("model1")
-loss, acc = model1.evaluate(x_test,y_test, batch_size=1)
-print("acc:",acc)
-y_= model1.predict(x_test)
-print(y_)
+l1,l2,l3,acc1,acc2 = model.evaluate([x1_test,x2_test],[y1_test,y2_test], batch_size=1)
+print(l1,": ",l2,": ",l3)
+print("acc1:",acc1)
+print("acc2:",acc2)
+y1_, y2_= model.predict([x1_test,x2_test])
+print(y1_)
+print(y2_)
 
 # model1.summary()
 
@@ -132,11 +135,25 @@ print(y_)
 # # #RMSE 구하기
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.metrics import mean_absolute_error
-def RMSE(y_test, y_):
+# [y1_test,y2_test], [y1_,y2_]
+# def RMSE(y1_test,y2_test, y1_,y2_):
+def RMSE(y_test,y_):
+    # return np.sqrt(mean_squared_error(y1_test,y1_)),np.sqrt(mean_squared_error(y2_test,y2_))
     return np.sqrt(mean_squared_error(y_test,y_))
-def RMAE(y_test, y_):
+
+# def RMAE(y1_test,y2_test, y1_,y2_):
+def RMAE(y_test,y_):
+    # return np.sqrt(mean_absolute_error(y1_test,y1_)),np.sqrt(mean_absolute_error(y2_test,y2_))
     return np.sqrt(mean_absolute_error(y_test,y_))
-print("RMSE:",RMSE(y_test,y_))
-print("RMAE:",RMAE(y_test,y_))
-print("r2:",r2_score(y_test,y_))
-'''
+
+
+print(np.array([y1_test,y2_test]).reshape(-1,1))
+# print("RMSE:",RMSE(y1_test,y2_test, y1_,y2_))
+print("RMSE:",RMSE(np.array([y1_test,y2_test]).reshape(-1,1), np.array([y1_,y2_]).reshape(-1,1)))
+# print([y1_test,y2_test])
+# print("RMAE:",RMAE(y1_test,y2_test, y1_,y2_))
+print("RMAE:",RMAE(np.array([y1_test,y2_test]).reshape(-1,1), np.array([y1_,y2_]).reshape(-1,1)))
+# print("r2:",r2_score(y1_test, y1_))
+# print("r2:",r2_score(y2_test, y2_))
+
+print(r2_score(np.array([y1_test,y2_test]).reshape(-1,1), np.array([y1_,y2_]).reshape(-1,1)))

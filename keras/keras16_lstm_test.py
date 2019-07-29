@@ -98,7 +98,7 @@ model.summary()
 model.compile(loss = "mse",optimizer="adam", metrics=['accuracy'])
 from keras.callbacks import EarlyStopping
 early = EarlyStopping(monitor="acc", patience=30, mode="auto")
-model.fit(x,y,epochs=5000)
+model.fit(x,y,epochs=5000, verbose=3)
 
 loss, acc = model.evaluate(x_test, y_test)
 y_ = model.predict(x_test)

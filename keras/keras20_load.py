@@ -1,6 +1,6 @@
 import keras
-import plaidml.keras
-plaidml.keras.install_backend()
+# import plaidml.keras
+# plaidml.keras.install_backend()
 import numpy as np
 # x = np.array(range(1,101))
 # y = np.array(range(1,101))

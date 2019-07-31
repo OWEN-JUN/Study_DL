@@ -6,7 +6,7 @@ y = np.array([1,2,3,4])
 #모델구성
 import keras
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, BatchNormalization
 
 from time import time
 from keras import layers
@@ -15,8 +15,29 @@ from keras import models
 model1 = Sequential()
 
 model1.add(Dense(40, input_dim=1, activation="relu"))
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
 model1.add(Dense(30, activation="relu"))
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
 model1.add(Dense(10))
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
+model1.add(BatchNormalization())
 model1.add(Dense(1))
 
 

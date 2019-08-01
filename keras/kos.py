@@ -153,7 +153,7 @@ x_t, x_val, y_t, y_val = train_test_split(x_t, y_t, random_state=66, test_size =
 ###x_train shape (593, 7, 6, 1)
 model = Sequential()
 model.add(LSTM(10, input_shape=(x_tr.shape[1],1),return_sequences=True))
-model.add(Dropout(0.3))
+# model.add(Dropout(0.3))
 
 model.add(Dense(50,activation="relu"))
 # model.add(Dropout(0.3))
@@ -164,7 +164,7 @@ model.add(Dense(1))
 
 
 model.compile(loss = "mse",optimizer="adam", metrics=['accuracy'])
-model.fit(x_tr,y_tr,epochs=2000,batch_size=20, verbose=2, validation_data=(x_val, y_val))
+model.fit(x_tr,y_tr,epochs=1500,batch_size=20, verbose=2, validation_data=(x_val, y_val))
 loss, acc = model.evaluate(x_t, y_t)
 y_ = model.predict(x_t)
 print(y_, "ori: ",y_t)

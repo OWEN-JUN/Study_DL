@@ -120,8 +120,7 @@ kospi_list.shape
 
 
 ###예측에 쓰이는 기간
-size = 3
-
+size = 5
 
 ##TRAIN 데이터와 LABEL데이터를 나누는 곳
 def split_7(seq, size):
@@ -174,21 +173,22 @@ x_t, x_val, y_t, y_val = train_test_split(x_t, y_t, random_state=66, test_size =
 ##모델
 
 model = Sequential()
-model.add(LSTM(5, input_shape=(x_tr.shape[1],1),return_sequences=False))
+model.add(LSTM(20, input_shape=(x_tr.shape[1],1),return_sequences=True))
+model.add(LSTM(50))
 # model.add(Dropout(0.3))
-
-model.add(Dense(500,activation="relu"))
-model.add(Dense(300,activation="relu"))
+# model.add(Dense(1000, input_shape=(x_tr.shape[1],1) ))
+# model.add(Dense(500,activation="relu"))
+# model.add(Dense(300,activation="relu"))
+# model.add(Dense(100,activation="relu"))
+# model.add(Dense(200,activation="relu"))
+# model.add(Dropout(0.3))
 model.add(Dense(100,activation="relu"))
-model.add(Dense(200,activation="relu"))
-# model.add(Dropout(0.3))
-model.add(Dense(10,activation="relu"))
 
 # model.add(Flatten())
 model.add(Dense(2))
 import keras
 
-model.compile(loss = "mse",optimizer="adam", metrics=['accuracy'])
+model.compile(loss = "mse",optimizer="adadelta", metrics=['accuracy'])
 early = keras.callbacks.EarlyStopping(monitor='val_loss',mode="auto",patience=20)
 model.fit(x_tr,y_tr,epochs=500,batch_size=50, verbose=2, validation_data=(x_val, y_val))
 
@@ -208,7 +208,7 @@ print(y_pre)
 y_pre_map = model.predict(x_map)
 # print(y_pre_map)
 plt.plot(y_map)
-plt.plot(y_pre_map[:,0])
+plt.plot(y_pre_map[:,1])
 
 plt.title("model kospi")
 plt.ylabel("end_price")

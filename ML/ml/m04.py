@@ -1,4 +1,5 @@
 from sklearn.svm import LinearSVC, SVC
+
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
@@ -35,5 +36,5 @@ clf = SVC()
 clf.fit(x, y)
 
 y_ =clf.predict(x)
-print("Acc : ", accuracy_score(y,y_))
+print("Acc : ", accuracy_score(y,y_)) #accuracy_score는 분류에서만
 # print("predict: \n")

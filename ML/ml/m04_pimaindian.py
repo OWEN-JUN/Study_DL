@@ -25,20 +25,19 @@ y=dataset[:,-1]
 
 # x = minmax_scaler(x,1)
 # x = minmax_scaler(x,2)
-# x = minmax_scaler(x,3)
+x = minmax_scaler(x,3)
 
 import keras
 model = Sequential()
-model.add(Dense(100,input_dim=8, activation="relu"))
-model.add(Dense(20, activation="relu"))
-model.add(Dense(20, activation="relu"))
+model.add(Dense(50,input_dim=8, activation="relu"))
 model.add(Dense(20, activation="relu"))
 model.add(Dense(10, activation="relu"))
+
 model.add(Dense(1, activation="sigmoid"))
 
-model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["acc"])
+model.compile(loss="binary_crossentropy", optimizer="adadelta", metrics=["acc"])
 sig = np.float(0.6)
-model.fit(x, y, epochs=300, batch_size=20)
+model.fit(x, y, epochs=3000, batch_size=20, validation_split=0.08)
 
 print("Acc : ", model.evaluate(x,y)[1])
-print("predict: \n", model.predict_classes(x))
+# print("predict: \n", model.predict_classes(x))

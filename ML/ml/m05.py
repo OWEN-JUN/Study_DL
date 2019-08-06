@@ -8,9 +8,14 @@ import numpy as np
 from keras.models import *
 from keras.layers import *
 import tensorflow as tf
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, LabelEncoder
+# from sklearn.preprocessing import OneHotEncoder
 import keras
 import pandas as pd
+
+
+
+
 seed =0
 np.random.seed(seed)
 tf.set_random_seed(seed)
@@ -59,9 +64,10 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.2, train_siz
 from keras.utils import np_utils
 
 # print(y)
+# y = name_class(y)
 
 #케라스 원핫
-# y = name_class(y)
+# 
 # print(y)
 # y = np.array(y,dtype=np.int32)
 # y = np_utils.to_categorical(y,3)
@@ -71,7 +77,7 @@ from keras.utils import np_utils
 
 #넘파이 원핫
 # y = y.reshape((-1,1))
-# from sklearn.preprocessing import OneHotEncoder
+
 # oneh = OneHotEncoder()
 # oneh.fit(y)
 # y = oneh.transform(y).toarray()

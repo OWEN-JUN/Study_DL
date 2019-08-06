@@ -64,7 +64,7 @@ print(y)
 
 import keras
 model = Sequential()
-model.add(Dense(50,input_dim=4, activation="relu"))
+model.add(Dense(60,input_dim=4, activation="relu"))
 model.add(Dense(20, activation="relu"))
 model.add(Dense(5, activation="relu"))
 
@@ -72,7 +72,7 @@ model.add(Dense(3, activation="softmax"))
 
 model.compile(loss="binary_crossentropy", optimizer="adadelta", metrics=["acc"])
 
-model.fit(x, y, epochs=3000, batch_size=10, validation_split=0.1)
+model.fit(x, y, epochs=3000, batch_size=30, validation_split=0.1)
 
 print("Acc : ", model.evaluate(x,y)[1])
 # print("predict: \n", model.predict_classes(x))

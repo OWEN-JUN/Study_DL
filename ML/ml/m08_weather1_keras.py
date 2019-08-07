@@ -17,8 +17,8 @@ from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 
 
 df = pd.read_csv("./data/tem10y.csv", encoding="utf-8")
-train_year = (df["연"] <=2015)
-test_year = (df["연"]>=2016)
+# train_year = (df["연"] <= 2015)
+# test_year = (df["연"] >= 2016)
 interval=6
 
 def make_data(data):
@@ -34,9 +34,14 @@ def make_data(data):
             xa.append(temps[d])
         x.append(xa)
     return (x,y)
+from sklearn.model_selection import train_test_split
+x, y = make_data(df)
+x, y = np.array(x), np.array(y)
 
-train_x, train_y = make_data(df[train_year])
-test_x, test_y = make_data(df[test_year])
+train_x, test_x, train_y, test_y = train_test_split(x,y, test_size=0.15)
+
+
+# test_x, test_y = make_data(df[test_year])
 
 print(np.array(train_x).shape)
 print(np.array(train_y).shape)
@@ -58,16 +63,26 @@ import keras
 # model.add(Dense(10))
 # model.add(TimeDistributed(Dense(10)))
 from keras import regularizers
-model.add(LSTM(100, input_shape=(interval,1),return_sequences=True))
+model.add(LSTM(64, input_shape=(interval,1),return_sequences=True))
 model.add(LSTM(16))
 model.add(Dense(32,activation="relu"))
+model.add(Dense(20,activation="relu"))
+model.add(Dense(20,activation="relu"))
+model.add(Dense(20,activation="relu"))
+model.add(Dense(20,activation="relu"))
+model.add(Dense(20,activation="relu"))
+model.add(Dense(20,activation="relu"))
+model.add(Dense(20,activation="relu"))
+model.add(Dense(20,activation="relu"))
+model.add(Dense(20,activation="relu"))
+model.add(Dense(20,activation="relu"))
 model.add(Dense(20,activation="relu"))
 # model.add(Dense(10,activation="relu"))
 # keras.optimizers.adam(lr = 0.001,)
 model.add(Dense(1))
 model.compile(optimizer='RMSprop',
               loss='mse',
-              metrics=['mae'],)
+              metrics=['mae'])
 
 early = keras.callbacks.EarlyStopping(monitor="loss", patience=30, mode="auto")
 model.fit(train_x, train_y,epochs=300, batch_size=20, callbacks=[early])

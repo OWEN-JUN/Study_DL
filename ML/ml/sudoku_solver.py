@@ -1,47 +1,77 @@
 import numpy as np
+
+SIZE = 9
+matrix = []
+x_list = []
 # x = "0,0,4,0,0,0,6,2,0 7,6,0,1,0,0,8,0,0 0,0,0,0,0,0,1,0,7 0,0,0,9,0,1,3,0,0 2,3,0,4,0,6,0,9,1
 #  0,0,1,3,0,2,0,0,0 9,0,3,0,0,0,0,0,0 0,0,6,0,0,5,0,1,3 0,4,2,0,0,0,7,0,0"
-x="85...24..72......9..4.........1.7..23.5...9...4...........8..7..17..........36.4."
-met = []
-met = np.array(met)
 
-for i in x:
-    if i == ".":
-        met = np.append(met, 0)
-    else: met += (int(i))
-print(met)
-met = met.reshape((9,1,9))
-print(met)
-import sys
-sys.exit()
-SIZE = 9
+# met = np.array(met)
+
+# x = ['850002400', '720000009', '004000000', '000107002', '305000900', '040000000', '000080070', '017000000', '000036040']
+# met = []
+# print(x[0])
+# print(len(x[0]))
+# for i in range(len(x)):
+#     for j in range(len(x[i])):
+#         if x[i][j] == "0":
+#             met.append(int(0))
+#         else: met.append(int(x[i][j]))
+
+
+# print(met)
+# met = np.array(met).reshape((9,9))
+# print(met)
+# matrix = met.tolist()
+# print(matrix)
+
+
+
+# import sys
+# sys.exit()
+
+
 #sudoku problem
 #cells with value 0 are vacant cells
-matrix = [
-    [6,5,0,8,7,3,0,9,0],
-    [0,0,3,2,5,0,0,0,8],
-    [9,8,0,1,0,4,3,5,7],
-    [1,0,5,0,0,0,0,0,0],
-    [4,0,0,0,0,0,0,0,2],
-    [0,0,0,0,0,0,5,0,3],
-    [5,7,8,3,0,1,0,2,6],
-    [2,0,0,0,4,8,9,0,0],
-    [0,9,0,6,2,5,0,8,1]]
-matrix= [
-    [0,0,4,0,0,0,6,2,0],
-    [7,6,0,1,0,0,8,0,0],
-    [0,0,0,0,0,0,1,0,7],
-    [0,0,0,9,0,1,3,0,0],
-    [2,3,0,4,0,6,0,9,1],
-    [0,0,1,3,0,2,0,0,0],
-    [9,0,3,0,0,0,0,0,0],
-    [0,0,6,0,0,5,0,1,3],
-    [0,4,2,0,0,0,7,0,0]]
+# matrix = [
+#     [6,5,0,8,7,3,0,9,0],
+#     [0,0,3,2,5,0,0,0,8],
+#     [9,8,0,1,0,4,3,5,7],
+#     [1,0,5,0,0,0,0,0,0],
+#     [4,0,0,0,0,0,0,0,2],
+#     [0,0,0,0,0,0,5,0,3],
+#     [5,7,8,3,0,1,0,2,6],
+#     [2,0,0,0,4,8,9,0,0],
+#     [0,9,0,6,2,5,0,8,1]]
+# matrix= [
+#     [0,0,4,0,0,0,6,2,0],
+#     [7,6,0,1,0,0,8,0,0],
+#     [0,0,0,0,0,0,1,0,7],
+#     [0,0,0,9,0,1,3,0,0],
+#     [2,3,0,4,0,6,0,9,1],
+#     [0,0,1,3,0,2,0,0,0],
+#     [9,0,3,0,0,0,0,0,0],
+#     [0,0,6,0,0,5,0,1,3],
+#     [0,4,2,0,0,0,7,0,0]]
 
 #function to print sudoku
 def print_sudoku():
-    for i in matrix:
-        print (i)
+    # for i in matrix:
+    #     print (i)
+    sudo = []
+    
+    for i in range(len(matrix[:])):
+        string = ""
+        for j in range(len(matrix[i])):
+            if x_list[i][j] != "0":
+                string += "0"
+            else:
+                string += str(matrix[i][j])
+            # print(matrix)
+
+        sudo.append(string)
+    print(sudo)
+    return sudo
 
 #function to check if all cells are assigned or not
 #if there is any unassigned cell
@@ -108,7 +138,39 @@ def solve_sudoku():
             matrix[row][col]=0
     return False
 
-if solve_sudoku():
-    print_sudoku()
-else:
-    print("No solution")
+def sudoku_pro(x):
+    global matrix
+    global x_list
+    x_list = x
+    # x="85...24..72......9..4.........1.7..23.5...9...4...........8..7..17..........36.4."
+    
+    met = []
+    for i in range(len(x)):
+        for j in range(len(x[i])):
+            if x[i][j] == "0":
+                met.append(int(0))
+            else: met.append(int(x[i][j]))
+
+
+    # print(met)
+    met = np.array(met).reshape((9,9))
+    # print(met)
+    matrix = met.tolist()
+    # print(matrix)
+    
+    
+    
+    if solve_sudoku():
+        print_sudoku()
+    else:
+        print("No solution")
+
+
+
+
+
+
+
+     
+x = ['850002400', '720000009', '004000000', '000107002', '305000900', '040000000', '000080070', '017000000', '000036040']
+sudoku_pro(x)

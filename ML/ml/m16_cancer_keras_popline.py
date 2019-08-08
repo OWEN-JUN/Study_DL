@@ -58,12 +58,12 @@ def create_hyperparameters():
 
 # parameters_svc =  {"svm__C":[1,10,100,1000],"svm__kernel":["linear","rbf","sigmoid"],"svm__gamma":[0.001,0.0001]}
 parameters_svc =  {"C":[1,10,100,1000],"kernel":["linear","rbf","sigmoid"],"gamma":[0.001,0.0001]}
-from keras.wrappers.scikit_learn import KerasClassifier
+
 # hyperparameters = create_hyperparameters()
 
 
 
-
+from keras.wrappers.scikit_learn import KerasClassifier
 model =KerasClassifier(build_fn = build_network_cnn, verbose=1)
 
 from sklearn.pipeline import Pipeline

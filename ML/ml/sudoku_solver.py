@@ -70,7 +70,7 @@ def print_sudoku():
             # print(matrix)
 
         sudo.append(string)
-    print(sudo)
+    # print(sudo)
     return sudo
 
 #function to check if all cells are assigned or not
@@ -161,7 +161,7 @@ def sudoku_pro(x):
     
     
     if solve_sudoku():
-        print_sudoku()
+        return print_sudoku()
     else:
         print("No solution")
 
@@ -173,4 +173,6 @@ def sudoku_pro(x):
 
      
 x = ['850002400', '720000009', '004000000', '000107002', '305000900', '040000000', '000080070', '017000000', '000036040']
-sudoku_pro(x)
+a = sudoku_pro(x)
+
+print(a)

@@ -28,7 +28,7 @@ for v in list(y):
 
 y = newlist
 y = np_utils.to_categorical(y)
-print(y)
+# print(y)
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.pipeline import Pipeline
@@ -67,18 +67,24 @@ def create_hyperparameters():
             "model__node3" :node3,
             "model__layer_cnt":layer_cnt}
 
+x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.1)
 
+
+# print(np.where(y_test[:]>=1)[1])
+
+# import sys
+# sys.exit()
 hyperparameters = create_hyperparameters()
 
 model =KerasClassifier(build_fn = build_network_cnn, verbose=1)
 
 
 pip = Pipeline([("scaler", MinMaxScaler()),("model",model)])
-model=RandomizedSearchCV(estimator=pip, param_distributions=hyperparameters, n_iter=10,n_jobs=5, cv=3, verbose=1)
+model=RandomizedSearchCV(estimator=pip, param_distributions=hyperparameters, n_iter=30,n_jobs=5, cv=3, verbose=1)
 
 
 
-x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.1)
+
 
 # model = RandomForestClassifier(n_estimators=1000,max_depth=1000,max_leaf_nodes=1000,oob_score=True,)
 model.fit(x_train, y_train)
@@ -89,7 +95,7 @@ print(y_pred)
 print("score : ",model.score(x_test, y_test))
 # print("score : ",model.score(x_train, y_train))
 print(y_pred)
-# print("정답률", accuracy_score(y_test, y_pred))
+print("정답률", accuracy_score(np.where(y_test[:]>=1)[1], y_pred))
 
 print(model.best_params_)
 model_dic =model.best_params_

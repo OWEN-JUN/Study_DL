@@ -101,12 +101,12 @@ hyperparameters = create_hyperparameters()
 
 model =KerasClassifier(build_fn = build_network_cnn, verbose=1)
 pip = Pipeline([("scaler", MinMaxScaler()),("model",model)])
-search=RandomizedSearchCV(estimator=pip, param_distributions=hyperparameters, n_iter=10,n_jobs=1, cv=3, verbose=1)
+search=RandomizedSearchCV(estimator=pip, param_distributions=hyperparameters, n_iter=1,n_jobs=1, cv=3, verbose=1)
 # print(y_train.shape)
 search.fit(x_train, y_train)
 
 # # 
-
+print(search.feature_importances_)
 print(search.best_params_)
 print("score : ", search.best_score_)
 

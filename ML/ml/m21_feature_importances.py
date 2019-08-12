@@ -26,13 +26,13 @@ print("특성 중요도 : ",len(tree.feature_importances_))
 print("특성 중요도 : ",tree.feature_importances_)
 
 
-# def plot_feature_importances_cancer(model):
-#     n_features = cancer.data.shape[1]
-#     plt.barh(np.arange(n_features), tree.feature_importances_, align="center")
-#     plt.yticks(np.arange(n_features), cancer.feature_names)
-#     plt.xlabel("특성중요도")
-#     plt.ylabel("특성")
-#     plt.ylim(-1,n_features)
+def plot_feature_importances_cancer(model):
+    n_features = cancer.data.shape[1]
+    plt.barh(np.arange(n_features), tree.feature_importances_, align="center")
+    plt.yticks(np.arange(n_features), cancer.feature_names)
+    plt.xlabel("특성중요도")
+    plt.ylabel("특성")
+    plt.ylim(-1,n_features)
 
-# plot_feature_importances_cancer(tree)
-# plt.show()
+plot_feature_importances_cancer(tree)
+plt.show()

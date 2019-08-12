@@ -35,7 +35,7 @@ print(x_test.shape)
 from keras.layers import *
 from keras.models import *
 
-encoding_dim = 300
+encoding_dim = 60
 
 input_img = Input(shape=(784,))
 
@@ -71,11 +71,11 @@ autoencoder = Model(input_img, decoded) #784 -> 32 -> 784
 # autoencoder.summary()
 # encoder.summary()
 # decoder.summary()
-
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 autoencoder.compile(optimizer="adadelta",loss="binary_crossentropy",metrics=["acc"])
 # autoencoder.compile(optimizer="adadelta",loss="categorical_crossentropy",metrics=["acc"])
 
-history = autoencoder.fit(x_train, x_train, epochs = 50, batch_size=256, shuffle = True, validation_data=(x_test,x_test))
+history = autoencoder.fit(x_train, x_train, epochs = 15, batch_size=5, shuffle = True, validation_data=(x_test,x_test))
 
 
 # encoded_imgs = encoder.predict(x_test)

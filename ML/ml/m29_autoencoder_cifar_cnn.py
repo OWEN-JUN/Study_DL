@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 # print(x_train[0])
 minma = MinMaxScaler()
 x_train = x_train.reshape((len(x_train),x_train.shape[1],x_train.shape[2],3))
-
+x_train = x_train[:10]
 x_train = np.array(x_train, dtype=np.float32)
 # print(x_train.shape)
 # print(x_train[0])
@@ -19,7 +19,8 @@ x_test = x_test.reshape((len(x_test),x_test.shape[1],x_test.shape[2],3))
 print(x_train.shape)
 print(x_test.shape)
 
-
+x_train = x_train.astype("float32")/255
+x_test = x_test.astype("float32")/255
 
 ###모델구성###
 
@@ -81,7 +82,7 @@ def create_hyperparameters():
 
 # autoencoder.compile(optimizer="adadelta",loss="categorical_crossentropy",metrics=["acc"])
 model = build_network_dnn(optimizer = "adam",keep_prob=0,encoding_dim = 30)
-history=model.fit(x_train, x_train,epochs=10, batch_size=500)
+history=model.fit(x_train, x_train,epochs=200, batch_size=5)
 
 # print(search.best_params_)
 # print("best score : ", search.best_score_)
@@ -90,7 +91,9 @@ history=model.fit(x_train, x_train,epochs=10, batch_size=500)
 # decoded_imgs = autoencoder.predict_(x_test)
 
 decoded_imgs = model.predict(x_test)
-decoded_imgs[decoded_imgs<0]=0
+decoded_imgs[:] *= 1.2
+decoded_imgs[decoded_imgs<0.1]=0
+decoded_imgs[decoded_imgs>0.8]=1
 # decoded_imgs[decoded_imgs>255]=255
 print(decoded_imgs[0].reshape(32,32,3))
 # print(encoded_imgs)

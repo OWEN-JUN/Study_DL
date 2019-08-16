@@ -1,5 +1,6 @@
 import tensorflow as tf
 print(tf.__version__)
+##constant
 
 node1 = tf.constant([3.0,2.0],tf.float32)
 node2 = tf.constant(4.0)

@@ -19,18 +19,19 @@ hypothesis = x * w + b
 cost=tf.reduce_mean(tf.square(hypothesis - y))
 
 
-#optimizer#################################################
+#optimizer#################################################compile
 # train = tf.train.GradientDescentOptimizer(learning_rate=0.1).minimize(cost)
 train = tf.train.AdamOptimizer(learning_rate=0.3).minimize(cost)
+# train = tf.train.AdadeltaOptimizer(learning_rate=0.05,).minimize(cost)
 
 
 
-#launch the graph in a session#################################################
+#launch the graph in a session#################################################  model fit
 feed_dict={x_train:x}
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     #### model learning#################################################
-    for step in range(1001):
+    for step in range(30001):
         # _, cost_val, w_val, b_val = sess.run([train, cost, w, b], feed_dict=feed_dict)
         _, cost_val, w_val, b_val = sess.run([train, cost, w, b])
 

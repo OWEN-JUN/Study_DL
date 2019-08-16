@@ -9,9 +9,13 @@ print("node1:",node1, "node2",node2)
 print("node3:",node3)
 
 a = tf.placeholder(tf.float32)
-b=tf.placeholder(tf.float32)
+b = tf.placeholder(tf.float32)
 adder_node = a+b
 add_and_triple = adder_node *3
+print(a)
+print(b)
+print(adder_node)
+print(add_and_triple)
 ### with
 with tf.Session() as sess:
     print(sess.run(node1))

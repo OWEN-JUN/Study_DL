@@ -10,23 +10,16 @@ y_data = np.array([[0],[1],[1],[0]],dtype=np.float32)
 X = tf.placeholder(tf.float32, shape=[None, 2])
 Y = tf.placeholder(tf.float32, shape=[None, 1])
 
-W1 = tf.Variable(tf.random_normal([2, 2]), name='weight')
-b1 = tf.Variable(tf.random_normal([2]), name='bias')
-l1 = tf.sigmoid(tf.matmul(X, W1) + b1)
-
-W2 = tf.Variable(tf.random_normal([2, 4]), name='weight')
-b2 = tf.Variable(tf.random_normal([4]), name='bias')
-l2 = tf.sigmoid(tf.matmul(l1, W2) + b2)
+W1 = tf.Variable(tf.random_normal([2, 1]), name='weight')
+b1 = tf.Variable(tf.random_normal([1]), name='bias')
 
 
-W3 = tf.Variable(tf.random_normal([4, 1]), name='weight')
-b3 = tf.Variable(tf.random_normal([1]), name='bias')
 
 
 
 
 # Hypothesis
-hypothesis = tf.sigmoid(tf.matmul(l2, W3) + b3)    # 0과 1 사이의 값
+hypothesis = tf.sigmoid(tf.matmul(X, W1) + b1)    # 0과 1 사이의 값
 
 # cost/loss function 로지스틱 리그레션에서 cost에 -가 붙는다.
 cost = -tf.reduce_mean(Y * tf.log(hypothesis) + (1 - Y) * tf.log(1 - hypothesis))

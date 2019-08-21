@@ -5,21 +5,22 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 tf.set_random_seed(777)
 
-iris_data = np.load("./Study_DL/TF/data/iris_data.npy")
+cancer_data = np.load("./Study_DL/TF/data/cancer_data.npy")
 # iris_label = np.load("./Study_DL/TF/data/iris_label.npy")
 
-print("iris_data:",iris_data.shape)
+print("cancer_data:",cancer_data.shape)
 # print("iris_label:",iris_label.shape)
 # print(iris_data)
 # print(iris_label)
 
-x_train = iris_data[:,:-1]
+x_train = cancer_data[:,:-1]
 
-y_train = iris_data[:,[-1]]
+y_train = cancer_data[:,[-1]]
 # y_train = np.array(y_train,dtype=np.int32)
 
-print(x_train)
+
 print(y_train)
+
 print(x_train.shape, y_train.shape)
 x_train, x_test, y_train, y_test = train_test_split(x_train,y_train,test_size=0.2)
 print(x_train.shape, y_train.shape)
@@ -38,10 +39,10 @@ print(x_train.shape, y_train.shape)
 cnt = 1
 def layer(input, output,uplayer,dropout=0,end=False):
     global cnt
-    w = tf.get_variable("w%d"%(cnt),shape=[input, output],initializer=tf.contrib.layers.xavier_initializer())
+    w = tf.get_variable("w%d"%(cnt),shape=[input, output],initializer=tf.constant_initializer())
     b = tf.Variable(tf.random_normal([output]))
     if ~end:
-        layer = tf.nn.relu(tf.matmul(uplayer, w)+b)
+        layer = tf.matmul(uplayer, w)+b
     else: layer = tf.matmul(uplayer, w)+b
 
     if dropout != 0:
@@ -49,40 +50,32 @@ def layer(input, output,uplayer,dropout=0,end=False):
     cnt += 1
     return layer
 
-X = tf.placeholder(tf.float32,[None, 4])
-Y = tf.placeholder(tf.int32,[None, 1])
+X = tf.placeholder(tf.float32,[None, 30])
+Y = tf.placeholder(tf.float32,[None, 1])
 keep_prob = 0
 
-Y_one_hot = tf.one_hot(Y, 3) # one-hot
-print("one_hot:", Y_one_hot)
-Y_one_hot = tf.reshape(Y_one_hot, [-1, 3])
-print("reshape one_hot:", Y_one_hot)
-
-l1 = layer(4,10,X)
-l2 = layer(10,20,l1)
-l3 = layer(20,10,l2)
-
-l4 = layer(10,5,l3)
-
-logits = layer(5,3,l4,end=True)
 
 
-hypothesis = tf.nn.softmax(logits)
+l1 = layer(30,100,X)
+l2 = layer(100,10,l1)
+
+
+logits = layer(10,1,l2,end=True)
+
+
+hypothesis = tf.nn.sigmoid(logits)
 # hypothesis = tf.nn.softmax(logits)
-# cross entropy cost/loss
-# cost = tf.reduce_mean(-tf.reduce_sum(Y * tf.log(hypothesis), axis=1))
-# cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits = hypothesis, labels=Y))
-cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits = logits, labels=tf.stop_gradient([Y_one_hot])))
+cost = -tf.reduce_mean(Y * tf.log(hypothesis) + (1 - Y) * tf.log(1 - hypothesis))
+
+# train = tf.train.GradientDescentOptimizer(learning_rate=0.000002).minimize(cost)
 
 # train = tf.train.GradientDescentOptimizer(learning_rate=0.01).minimize(cost)
-train = tf.train.AdamOptimizer(learning_rate=0.001).minimize(cost)
-# train = tf.train.AdadeltaOptimizer(learning_rate=0.1).minimize(cost)
+# train = tf.train.AdamOptimizer(learning_rate=0.00001).minimize(cost)
+# train = tf.train.AdadeltaOptimizer(learning_rate=0.0001).minimize(cost)
+train = tf.train.AdagradOptimizer(learning_rate=0.0001).minimize(cost)
 
-prediction = tf.argmax(hypothesis, 1)
-
-
-correct_prediction = tf.equal(prediction, tf.argmax(Y_one_hot, 1))
-accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+predicted = tf.cast(hypothesis > 0.5, dtype=tf.float32)
+accuracy = tf.reduce_mean(tf.cast(tf.equal(predicted, Y), dtype=tf.float32))    # 일반적인 선형 회귀에선 안된다
 
 
 
@@ -99,7 +92,7 @@ with tf.Session() as sess:
             print("Step: {:5}\tCost: {:.3f}\tAcc: {:.2%}".format(step, cost_val, acc_val))
 
     # Let's see if we can predict
-    a, pred = sess.run([accuracy, prediction], feed_dict={X: x_test,Y: y_test})
+    a, pred = sess.run([accuracy, predicted], feed_dict={X: x_test,Y: y_test})
     # y_data: (N, 1) = flatten => (N, ) matches pred.shape
     for p, y in zip(pred, y_train.flatten()):
         print("[{}] Prediction: {} True Y: {}".format(p == int(y), p, int(y)))

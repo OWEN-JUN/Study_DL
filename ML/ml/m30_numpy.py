@@ -28,15 +28,20 @@ print(b)
 #####sample######
 def name_class(y):
     for i in range(len(y)):
-        if y[i] == b"Iris-setosa":
+        if y[i] == "Iris-setosa":
             y[i] = 0
-        elif y[i] == b"Iris-versicolor":
+        elif y[i] == "Iris-versicolor":
             y[i] = 1
         else:
             y[i] = 2
 
     return y
+
+
+
 import pandas as pd
+
+'''
 from keras.datasets import mnist
 (x_train, y_train),(x_test, y_test) = mnist.load_data()
 
@@ -96,38 +101,39 @@ cancer_data = np.c_[cancer.data,label]
 np.save("cancer_data.npy",cancer_data)
 cancer_d = np.load("cancer_data.npy")
 print("cancer",cancer_d.shape)
+'''
 
 
 
 
-
-iris_data = pd.read_csv("../data/iris2.csv", encoding="utf-8")
+iris_data = pd.read_csv("./Study_DL/ML/data/iris.csv", encoding="utf-8")
 
 
 x = np.array(iris_data.iloc[:,:-1])
+print(iris_data.iloc[:,-1])
 y = name_class(iris_data.iloc[:,-1])
-
+print(y)
 y = np.array(y,dtype=np.int32)
-iris2_data = np.c_[x,y]
-np.save("iris2_data.npy",iris2_data)
-# np.save("iris2_label.npy",y)
+iris_data = np.c_[x,y]
+np.save("iris_data.npy",iris_data)
+np.save("iris_label.npy",y)
 
-iris2_data = np.load("./iris2_data.npy")
+iris_data = np.load("./iris_data.npy")
 # iris2_label = np.load("./iris2_label.npy")
 
-print("iris2_data:",iris2_data.shape)
+print("iris_data:",iris_data.shape)
 # print("iris2_label:",iris2_label.shape)
-
-wine_data = pd.read_csv("../data/winequality-white.csv",sep=";", encoding="utf-8")
+'''
+wine_data = pd.read_csv("./Study_DL/ML/data/winequality-white.csv",sep=";", encoding="utf-8")
 # print(wine_data)
 np.save("wine_data.npy",np.array(wine_data))
 wine = np.load("wine_data.npy")
 print("whine:",wine.shape)
-pima = pd.read_csv("../data/pima-indians-diabetes.csv",header = None)
+pima = pd.read_csv("./Study_DL/ML/data/pima-indians-diabetes.csv",header = None)
 # print(pima)
 np.save("pima.npy",np.array(pima))
 pima = np.load("pima.npy")
 print("pima:",pima.shape)
 
-
+'''
 

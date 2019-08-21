@@ -51,6 +51,8 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 # Launch graph
 with tf.Session() as sess:
     # Initialize TensorFlow variables
+    
+
     sess.run(tf.global_variables_initializer())
     print(y_data)
     for step in range(5001):
@@ -64,5 +66,6 @@ with tf.Session() as sess:
     for p, y in zip(pred, y_data.flatten()):
         print("[{}] Prediction: {} True Y: {}".format(p == int(y), p, int(y)))
     print(a)
+    writer = tf.summary.FileWriter('./board/sample_1', sess.graph)
    
     

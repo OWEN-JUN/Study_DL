@@ -10,11 +10,11 @@ y_data = np.array([[0],[1],[1],[0]],dtype=np.float32)
 X = tf.placeholder(tf.float32, shape=[None, 2])
 Y = tf.placeholder(tf.float32, shape=[None, 1])
 
-W1 = tf.Variable(tf.random_normal([2, 100]), name='weight')
-b1 = tf.Variable(tf.random_normal([100]), name='bias')
+W1 = tf.Variable(tf.random_normal([2, 100000]), name='weight')
+b1 = tf.Variable(tf.random_normal([100000]), name='bias')
 l1 = tf.nn.relu(tf.matmul(X, W1) + b1)
 
-W2 = tf.Variable(tf.random_normal([100, 80]), name='weight')
+W2 = tf.Variable(tf.random_normal([100000, 80]), name='weight')
 b2 = tf.Variable(tf.random_normal([80]), name='bias')
 l2 = tf.nn.relu(tf.matmul(l1, W2) + b2)
 
@@ -80,7 +80,7 @@ with tf.Session() as sess:
 
     for step in range(10001):
         cost_val, _ = sess.run([cost, train], feed_dict={X: x_data, Y: y_data})
-        if step % 200 == 0:
+        if step % 50 == 0:
             print(step, cost_val)
 
     # Accuracy report

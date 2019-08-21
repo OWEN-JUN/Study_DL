@@ -11,6 +11,7 @@ b = tf.Variable(tf.random_normal([1]), name="bias")
 
 hypothesis = x_train * W + b
 
+
 # ■■■■■■■■■■ --- model.compile --- ■■■■■■■■■■
 #   coss/loss function
 cost = tf.reduce_mean(tf.square(hypothesis - y_train))  # (loss='mse', optimizer='adam')
@@ -34,4 +35,6 @@ with tf.Session() as sess:  # with를 씀으로서 close 안해도 된다
 
         if step % 20 == 0:
             print(step, cost_val, W_val, b_val)
+
+    print(sess.run([hypothesis]))
 # ■■■■■■■■■■ -------------------- ■■■■■■■■■■

@@ -19,7 +19,7 @@ y_train = cancer_data[:,[-1]]
 # y_train = np.array(y_train,dtype=np.int32)
 
 
-print(y_train)
+
 
 print(x_train.shape, y_train.shape)
 x_train, x_test, y_train, y_test = train_test_split(x_train,y_train,test_size=0.2)
@@ -42,7 +42,7 @@ def layer(input, output,uplayer,dropout=0,end=False):
     w = tf.get_variable("w%d"%(cnt),shape=[input, output],initializer=tf.constant_initializer())
     b = tf.Variable(tf.random_normal([output]))
     if ~end:
-        layer = tf.matmul(uplayer, w)+b
+        layer = tf.nn.leaky_relu(tf.matmul(uplayer, w)+b)
     else: layer = tf.matmul(uplayer, w)+b
 
     if dropout != 0:
@@ -56,8 +56,8 @@ keep_prob = 0
 
 
 
-l1 = layer(30,100,X)
-l2 = layer(100,10,l1)
+l1 = layer(30,50,X)
+l2 = layer(50,10,l1)
 
 
 logits = layer(10,1,l2,end=True)
@@ -67,12 +67,12 @@ hypothesis = tf.nn.sigmoid(logits)
 # hypothesis = tf.nn.softmax(logits)
 cost = -tf.reduce_mean(Y * tf.log(hypothesis) + (1 - Y) * tf.log(1 - hypothesis))
 
-# train = tf.train.GradientDescentOptimizer(learning_rate=0.000002).minimize(cost)
+# train = tf.train.GradientDescentOptimizer(learning_rate=0.0002).minimize(cost)
 
 # train = tf.train.GradientDescentOptimizer(learning_rate=0.01).minimize(cost)
-# train = tf.train.AdamOptimizer(learning_rate=0.00001).minimize(cost)
+train = tf.train.AdamOptimizer(learning_rate=0.000008).minimize(cost)
 # train = tf.train.AdadeltaOptimizer(learning_rate=0.0001).minimize(cost)
-train = tf.train.AdagradOptimizer(learning_rate=0.0001).minimize(cost)
+# train = tf.train.AdagradOptimizer(learning_rate=0.0001).minimize(cost)
 
 predicted = tf.cast(hypothesis > 0.5, dtype=tf.float32)
 accuracy = tf.reduce_mean(tf.cast(tf.equal(predicted, Y), dtype=tf.float32))    # 일반적인 선형 회귀에선 안된다
@@ -89,7 +89,7 @@ with tf.Session() as sess:
     for step in range(5001):
         _, cost_val, acc_val = sess.run([train, cost, accuracy], feed_dict={X: x_train, Y: y_train})
         if step % 100 == 0:
-            print("Step: {:5}\tCost: {:.3f}\tAcc: {:.2%}".format(step, cost_val, acc_val))
+            print("Step: {:5}\tCost: {:f}\tAcc: {:.2%}".format(step, cost_val, acc_val))
 
     # Let's see if we can predict
     a, pred = sess.run([accuracy, predicted], feed_dict={X: x_test,Y: y_test})

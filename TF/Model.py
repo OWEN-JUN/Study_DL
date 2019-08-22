@@ -2,11 +2,37 @@ import tensorflow as tf
 
 
 class Model:
-    # Model class => layer_Cat: 1 (회귀), 2(이진분류), 3(카테고리분류)
+    
     # layer_num => 레이어 수
     
-
     class Dense:
+        
+        def __init__(self,output_dim,activate,input_dim=0,uplayer=None,keep=0,layer_cnt=0):
+            self.layer_cnt = layer_cnt
+            
+            self.input_dim = input_dim
+            self.output_dim = output_dim
+            self.uplayer = uplayer
+            self.keep = keep
+            self.activate = activate
+            self.layer = None
+
+        def make_layer(self):    
+     
+            w = tf.get_variable("w%d"%(self.layer_cnt),shape=[self.input_dim, self.output_dim],initializer=tf.contrib.layers.xavier_initializer())
+            b = tf.Variable(tf.random_normal([self.output_dim]))
+            if self.activate == "relu":
+                layer = tf.nn.relu(tf.matmul(self.uplayer, w)+b)
+            elif self.activate == "leaky_relu":
+                layer = tf.nn.leaky_relu(tf.matmul(self.uplayer, w)+b)
+        
+            else: layer = tf.matmul(self.uplayer, w)+b
+
+            if self.keep != 0:
+                layer = tf.nn.dropout(layer, keep_prob=self.keep)
+            
+            self.layer = layer
+    class Conv2d:
         
         def __init__(self,output_dim,activate,input_dim=0,uplayer=None,keep=0,layer_cnt=0):
             self.layer_cnt = layer_cnt
@@ -68,7 +94,6 @@ class Model:
         # print(self.hidden_layer)
         
         return self.hidden_layer[-1].layer
-
 
 
 
@@ -157,3 +182,5 @@ m.add_dense(1,input_dim=1)
 m.compile(loss="mse",optimizer="adam")
 m.fit(x_train, y_train, epochs=1000)
 m.predict(x_train)
+
+

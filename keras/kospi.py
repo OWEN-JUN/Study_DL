@@ -23,7 +23,7 @@ from keras.models import Sequential
 from keras.layers import Dense, LSTM, Dropout, BatchNormalization
 from sklearn.model_selection import train_test_split
 
-kospi = pd.read_csv("kospi.csv")
+kospi = pd.read_csv("./kospi.csv")
 
 kospi
 

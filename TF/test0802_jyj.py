@@ -62,7 +62,7 @@ print(l1)
 
 ###예측에 쓰이는 기간
 
-def make_set(seq,size = 10,pre_day = 5):
+def make_set(seq,size = 2,pre_day = 5):
     test_up = up_split(seq,size,pre_day)
     test_down = down_split(seq,size,pre_day)
     test_label = split_label(seq,size,pre_day)
@@ -150,7 +150,7 @@ import tensorflow as tf
 
 # leaky_relu = tf.nn.leaky_relu
 input1 = Input(shape=(x_train_up.shape[1],x_train_up.shape[2]))
-lstm1 = LSTM(30, activation=tf.nn.leaky_relu,return_sequences=True)(input1)
+lstm1 = LSTM(5, activation=tf.nn.leaky_relu,return_sequences=True)(input1)
 lstm1 = Dropout(0.7)(lstm1)
 # lstm1 = BatchNormalization()(lstm1)
 lstm1 = LSTM(20, activation=tf.nn.leaky_relu,return_sequences=True)(lstm1)

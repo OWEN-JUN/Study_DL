@@ -44,12 +44,12 @@ Y = tf.placeholder(tf.float32, [None, 10])
 
 
 
-L3 =tf.layers.conv2d(X_img,64,[3,3],activation=tf.nn.relu)
+L3 =tf.layers.conv2d(X_img,128,[3,3],activation=tf.nn.relu,padding="SAME")
 L3 = tf.layers.max_pooling2d(L3,[2,2],[2,2])
 L3 = tf.layers.dropout(L3,0.7)
 
 
-L4 =tf.layers.flatten(L3)
+# L4 =tf.layers.flatten(L3)
 L4 = tf.layers.dense(L4,256,activation=tf.nn.relu)
 L4 = tf.layers.dropout(L4,0.7)
 

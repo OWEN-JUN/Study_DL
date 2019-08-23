@@ -47,19 +47,22 @@ L1 = tf.layers.max_pooling2d(L1,[2,2],[2,2])
 # L1 = tf.layers.dropout(L1,0.7)
 
 
-L2 =tf.layers.conv2d(L1,128,[3,3],activation=tf.nn.relu)
+L2 =tf.layers.conv2d(L1,128,[3,3],activation=tf.nn.relu,padding="SAME")
 L2 = tf.layers.max_pooling2d(L2,[2,2],[2,2])
 # L1 = tf.layers.dropout(L1,0.7)
 
 
+L3 =tf.layers.conv2d(L2,256,[4,4],activation=tf.nn.relu)
+L3 = tf.layers.max_pooling2d(L3,[2,2],[2,2])
 
 
 
-L3 =tf.layers.flatten(L2)
-L3 = tf.layers.dense(L3,30,activation=tf.nn.relu)
+
+L4 =tf.layers.flatten(L3)
+L4 = tf.layers.dense(L4,30,activation=tf.nn.relu)
 # L3 = tf.layers.dropout(L3,0.7)
 
-logits = tf.layers.dense(L3, 10, activation=tf.nn.relu)
+logits = tf.layers.dense(L4, 10, activation=tf.nn.relu)
 
 
 
@@ -84,7 +87,7 @@ with tf.Session() as sess:
     print('Learning started. It takes sometime.')
     for epoch in range(training_epochs):
         avg_cost = 0
-        total_batch = x_train.shape[0]//batch_size
+        total_batch = x_train.shape[0] // batch_size
         for i in range(total_batch):
             batch_xs, batch_ys = next_batch(batch_size, x_train, y_train)
             feed_dict = {X: batch_xs, Y: batch_ys}
@@ -109,7 +112,7 @@ with tf.Session() as sess:
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     print('Accuracy:', sess.run(accuracy, feed_dict={X: x_test, Y: y_test}))
     for i in range(10):
-        print("pre_:",sess.run(pre_,feed_dict={X: x_test[i]}),"true:",y_test[i])
+        print("pre_:",sess.run(pre_,feed_dict={X: x_test[i:i+1]}),"true:",y_test[i:i+1])
 # Get one and predict
 import sys
 sys.exit()

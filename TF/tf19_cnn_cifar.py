@@ -39,10 +39,10 @@ print("reshape one_hot:", Y_one_hot)
 
 
 learning_rate = 0.001
-training_epochs = 50
+
 batch_size = 100
 
-L1 =tf.layers.conv2d(X,64,[3,3],activation=tf.nn.relu,padding="SAME")
+L1 =tf.layers.conv2d(X,64,[2,2],activation=tf.nn.relu,padding="SAME")
 L1 = tf.layers.max_pooling2d(L1,[2,2],[2,2])
 # L1 = tf.layers.dropout(L1,0.7)
 
@@ -55,14 +55,25 @@ L2 = tf.layers.max_pooling2d(L2,[2,2],[2,2])
 L3 =tf.layers.conv2d(L2,256,[4,4],activation=tf.nn.relu)
 L3 = tf.layers.max_pooling2d(L3,[2,2],[2,2])
 
+W4 = tf.Variable(tf.random_normal([3, 3, 256, 500], stddev=0.01))
+            # kernel_size: (3,3), channel: 1(흑백), output: 32
+print("W4: ", W4)   # shape=(3, 3, 1, 32)
+#   Conv    ->   (?, 28, 28, 32)
+#   Pool    ->   (?, 14, 14, 32)
+L4 = tf.nn.conv2d(L3, W4, strides=[1, 1, 1, 1], padding='SAME')  # stride: 몇 칸씩 움직일 것인가
+#                                       [    ] 가운데 값 두개만 주로 쓴다. 바깥 2개는 거의 고정
+# print("L1: ", L1)   # shape=(?, 28, 28, 32)
+L4 = tf.nn.relu(L4)
+L4 = tf.nn.max_pool(L4, ksize=[1, 2, 2, 1], # (2, 2)로 자른 것을 2칸씩 이동 -> 반으로 줄어든다
+                      strides=[1, 2, 2, 1], padding='SAME')
+# print("L1: ", L1)   # shape=(?, 14, 14, 32)
 
 
-
-L4 =tf.layers.flatten(L3)
-L4 = tf.layers.dense(L4,30,activation=tf.nn.relu)
+L5 =tf.layers.flatten(L4)
+L5 = tf.layers.dense(L5,30,activation=tf.nn.relu)
 # L3 = tf.layers.dropout(L3,0.7)
 
-logits = tf.layers.dense(L4, 10, activation=tf.nn.relu)
+logits = tf.layers.dense(L5, 10, activation=tf.nn.relu)
 
 
 
@@ -74,48 +85,56 @@ cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
     #labels=tf.stop_gradient([Y_one_hot])
 optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 # hyper parameters
+pre_ = tf.argmax(logits, 1)
 
+correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(Y_one_hot, 1))
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 # initialize
 with tf.Session() as sess:
 
     sess.run(tf.global_variables_initializer())
-
-
-
+    training_epochs = 5
+    
     # train my model, Model Fit
-    print('Learning started. It takes sometime.')
-    for epoch in range(training_epochs):
-        avg_cost = 0
-        total_batch = x_train.shape[0] // batch_size
-        for i in range(total_batch):
-            batch_xs, batch_ys = next_batch(batch_size, x_train, y_train)
-            feed_dict = {X: batch_xs, Y: batch_ys}
-            c, _ = sess.run([cost, optimizer], feed_dict=feed_dict)
-            avg_cost += c / total_batch
+    acc = 0
+    while acc<0.7:
+        print('Learning started. It takes sometime.')
+        for epoch in range(training_epochs):
+            avg_cost = 0
+            total_batch = x_train.shape[0] // batch_size
+            for i in range(total_batch):
+                batch_xs, batch_ys = next_batch(batch_size, x_train, y_train)
+                feed_dict = {X: batch_xs, Y: batch_ys}
+                c, _ = sess.run([cost, optimizer], feed_dict=feed_dict)
+                avg_cost += c / total_batch
 
-        print('Epoch:', '%04d' % (epoch + 1), 'cost=', '{:.9f}'.format(avg_cost))
+            print('Epoch:', '%04d' % (epoch + 1), 'cost=', '{:.9f}'.format(avg_cost))
 
-    print('Learning Finished!')
+        print('Learning Finished!')
+        
+        test_accuracy = 0.0  
+        for i in range(10):
+            batch_xs, batch_ys = next_batch(1000, x_test, y_test)
+            test_accuracy = test_accuracy + accuracy.eval(feed_dict={X: batch_xs, Y: batch_ys})
+        test_accuracy = test_accuracy / 10;
+        print("테스트 데이터 정확도: %f" % test_accuracy)
+        acc = test_accuracy
+        
+        # for i in range(10):
+        #     print("pre_:",sess.run(pre_,feed_dict={X: x_test[i:i+1]}),"true:",y_test[i:i+1])
 
 
 
 
+    
 
 
 
 
-
-# Test model and check accuracy
-    pre_ = tf.argmax(logits, 1)
-    correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(Y, 1))
-    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-    print('Accuracy:', sess.run(accuracy, feed_dict={X: x_test, Y: y_test}))
-    for i in range(10):
-        print("pre_:",sess.run(pre_,feed_dict={X: x_test[i:i+1]}),"true:",y_test[i:i+1])
 # Get one and predict
-import sys
-sys.exit()
+# import sys
+# sys.exit()
 # r = random.randint(0, len(x_test) - 1)
 # print('Label: ', sess.run(tf.argmax(mnist.test.labels[r:r + 1], 1)))
 # print("Prediction: ", sess.run(tf.argmax(logits, 1), feed_dict={X: mnist.test.images[r:r + 1]}))

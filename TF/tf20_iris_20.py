@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import random
 import numpy as np
 from sklearn.model_selection import train_test_split
-tf.set_random_seed(666)
+tf.set_random_seed(8)
 
 iris_data = np.load("./data/iris_data.npy")
 # iris_label = np.load("./Study_DL/TF/data/iris_label.npy")
@@ -21,7 +21,7 @@ y_train = iris_data[:,[-1]]
 print(x_train)
 print(y_train)
 print(x_train.shape, y_train.shape)
-x_train, x_test, y_train, y_test = train_test_split(x_train,y_train,test_size=0.1)
+x_train, x_test, y_train, y_test = train_test_split(x_train,y_train,test_size=0.2)
 print(x_train.shape, y_train.shape)
 
 # w1 = tf.get_variable("w1",shape=[?,?],initializer=tf.random_uniform_initializer())
@@ -48,7 +48,7 @@ Y_one_hot = tf.reshape(Y_one_hot, [-1, 3])
 print("reshape one_hot:", Y_one_hot)
 
 
-l1 = tf.layers.dense(X, 30, activation=tf.nn.relu)
+l1 = tf.layers.dense(X, 3, activation=tf.nn.relu)
 l2 = tf.layers.dense(l1, 50, activation=tf.nn.relu)
 l3 = tf.layers.dense(l2, 100, activation=tf.nn.relu)
 logits = tf.layers.dense(l3, 3, activation=tf.nn.relu)
@@ -60,7 +60,7 @@ hypothesis = tf.nn.softmax(logits)
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits = logits, labels=tf.stop_gradient([Y_one_hot])))
 
 # train = tf.train.GradientDescentOptimizer(learning_rate=0.01).minimize(cost)
-train = tf.train.AdamOptimizer(learning_rate=0.001).minimize(cost)
+train = tf.train.AdamOptimizer(learning_rate=0.0001).minimize(cost)
 # train = tf.train.AdadeltaOptimizer(learning_rate=0.1).minimize(cost)
 
 prediction = tf.argmax(hypothesis, 1)
@@ -78,10 +78,10 @@ with tf.Session() as sess:
 
     sess.run(tf.global_variables_initializer())
     
-    for step in range(12001):
-        _, cost_val, acc_val = sess.run([train, cost, accuracy], feed_dict={X: x_train, Y: y_train})
+    for step in range(10001):
+        _, cost_val, acc_val,l1 = sess.run([train, cost, accuracy,l1], feed_dict={X: x_train, Y: y_train})
         if step % 100 == 0:
-            print("Step: {:5}\tCost: {:.3f}\tAcc: {:.2%}".format(step, cost_val, acc_val))
+            print("Step: {:5}\tCost: {:.3f}\tAcc: {:.2%},{}".format(step, cost_val, acc_val,l1))
 
     # Let's see if we can predict
     a, pred = sess.run([accuracy, prediction], feed_dict={X: x_test,Y: y_test})

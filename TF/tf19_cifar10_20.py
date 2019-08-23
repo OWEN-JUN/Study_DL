@@ -43,24 +43,25 @@ learning_rate = 0.001
 batch_size = 100
 
 L1 =tf.layers.conv2d(X,32,[2,2],activation=tf.nn.relu,padding="SAME")
+# L1 = tf.layers.max_pooling2d(L1,[2,2],[1,1],padding="SAME")
+# L1 =tf.layers.conv2d(L1,32,[2,2],activation=tf.nn.relu,padding="SAME")
 L1 = tf.layers.max_pooling2d(L1,[2,2],[1,1],padding="SAME")
-L1 =tf.layers.conv2d(L1,32,[2,2],activation=tf.nn.relu,padding="SAME")
-L1 = tf.layers.max_pooling2d(L1,[2,2],[1,1],padding="SAME")
-L1 = tf.layers.dropout(L1,0.3)
+# L1 = tf.layers.dropout(L1,0.3)
 
 
+# L2 =tf.layers.conv2d(L1,64,[3,3],activation=tf.nn.relu,padding="SAME")
 L2 =tf.layers.conv2d(L1,64,[3,3],activation=tf.nn.relu,padding="SAME")
-L2 = tf.layers.max_pooling2d(L2,[2,2],[1,1],padding="SAME")
-L2 =tf.layers.conv2d(L2,64,[3,3],activation=tf.nn.relu,padding="SAME")
-L2 = tf.layers.max_pooling2d(L2,[2,2],[2,2])
-L2 = tf.layers.dropout(L2,0.4)
+L2 = tf.layers.max_pooling2d(L2,[2,2],[2,2],padding="SAME")
+
+# L2 = tf.layers.max_pooling2d(L2,[2,2],[2,2])
+# L2 = tf.layers.dropout(L2,0.4)
 
 
-L3 =tf.layers.conv2d(L2,128,[4,4],activation=tf.nn.relu)
-L3 = tf.layers.max_pooling2d(L3,[2,2],[1,1])
-L3 =tf.layers.conv2d(L3,128,[4,4],activation=tf.nn.relu)
-L3 = tf.layers.max_pooling2d(L3,[2,2],[1,1])
-L3 = tf.layers.dropout(L3,0.5)
+# L3 =tf.layers.conv2d(L2,128,[3,3],activation=tf.nn.relu)
+# L3 = tf.layers.max_pooling2d(L3,[2,2],[1,1])
+L3 =tf.layers.conv2d(L2,256,[3,3],activation=tf.nn.relu)
+L3 = tf.layers.max_pooling2d(L3,[2,2],[2,2])
+# L3 = tf.layers.dropout(L3,0.5)
 
 
 L5 =tf.layers.flatten(L3)

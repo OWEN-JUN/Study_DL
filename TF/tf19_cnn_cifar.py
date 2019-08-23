@@ -39,7 +39,7 @@ print("reshape one_hot:", Y_one_hot)
 
 
 learning_rate = 0.001
-training_epochs = 10
+training_epochs = 50
 batch_size = 100
 
 L1 =tf.layers.conv2d(X,64,[3,3],activation=tf.nn.relu,padding="SAME")

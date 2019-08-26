@@ -50,6 +50,6 @@ model.add(Dense(10, activation="softmax"))
 model.summary()
 
 model.compile(loss="categorical_crossentropy", optimizer="adadelta",metrics=["acc"])
-model.fit(x_train,y_train,epochs=30, batch_size=1500)
+model.fit(x_train,y_train,epochs=300, batch_size=1500)
 
 print("acc: ",model.evaluate(x_test,y_test)[1])

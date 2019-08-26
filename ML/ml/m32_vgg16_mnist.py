@@ -5,12 +5,7 @@ from keras.layers import *
 from keras.utils import np_utils
 from keras.datasets import mnist
 
-a = Xception()
-b=InceptionV3()
-c=ResNet50()
-d=MobileNet()
-import sys
-sys.exit()
+
 (x_train, y_train),(x_test, y_test) = mnist.load_data()
 print(x_train.shape)
 x_train = np.array(x_train).reshape((-1,np.prod(x_train.shape[1:])))

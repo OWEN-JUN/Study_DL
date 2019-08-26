@@ -49,11 +49,12 @@ input_dim = 5
 hidden_size = 5
 learning_rate = 0.1
 
-
+# leakyr=tf.nn.leaky_relu
 model = Sequential()
 
 model.add(LSTM(30,input_shape=(6,5),return_sequences=True))
 model.add(LSTM(10,return_sequences=True))
+
 # model.add(Dense(100,activation="relu"))
 
 model.add(LSTM(5,activation="softmax",return_sequences=True))
@@ -66,7 +67,7 @@ model.compile(loss="categorical_crossentropy",optimizer="adam",metrics=["accurac
 
 # early_stoping_callback = keras.callbacks.EarlyStopping(monitor="loss",patience=10)
 
-history = model.fit(x_data, y_data, epochs = 600, batch_size=1, verbose=2)
+history = model.fit(x_data, y_data, epochs = 700, batch_size=1, verbose=2)
 
 print("\n test acc: %.4f"%(model.evaluate(x_data, y_data)[1]))
 

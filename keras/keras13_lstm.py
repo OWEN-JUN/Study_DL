@@ -14,6 +14,8 @@ print("y.shape",y.shape)
 x = x.reshape((x.shape[0],x.shape[1],1))
 print("x.shape",x.shape)
 
+
+
 #2모델구성
 
 model = Sequential()

@@ -4,7 +4,8 @@ import numpy as np
 from sklearn.model_selection import train_test_split, KFold, cross_val_score
 from sklearn.metrics import accuracy_score
 from sklearn.utils.testing import all_estimators
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder 
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+ 
 # warnings.filterwarnings("ignore")
 
 # iris_data = pd.read_csv("./data/iris2.csv", encoding="utf-8")

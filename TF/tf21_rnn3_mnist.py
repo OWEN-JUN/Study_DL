@@ -1,8 +1,11 @@
 import tensorflow as tf
 
+import random
+
+tf.set_random_seed(777)
 from tensorflow.examples.tutorials.mnist import input_data
 
-mnist = input_data.read_data_sets("./mnist/data", one_hot = True)
+mnist = input_data.read_data_sets("mnist_data/", one_hot=True)
 
 # 옵션 설정
 learning_rate = 0.001

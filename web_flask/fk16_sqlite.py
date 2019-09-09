@@ -6,7 +6,7 @@ conn = sqlite3.connect("test.db")
 cursor = conn.cursor()
 
 # 테이블이 없다면 해당 테이블을 생성
-cursor.execute("""DROP TABLE any """)
+cursor.execute("""DROP TABLE supermarket """)
 cursor.execute("""CREATE TABLE IF NOT EXISTS supermarket(ITemno INTEGER, Category TEXT, FoodName TEXT, Company TEXT, P INTEGER )""")
 
 # 테이블의 내용을 모두 지웁니다.
